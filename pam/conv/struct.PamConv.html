@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `PamConv` struct in crate `pam`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, PamConv">
+
+    <title>pam::conv::PamConv - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='../index.html'>pam</a>::<wbr><a href='index.html'>conv</a></p><div class='block struct'><h2>Structs</h2><a class='struct current' href='struct.PamConv.html' title='`PamConv` acts as a channel for communicating with user.'>PamConv</a></div><div class='block enum'><h2>Enums</h2><a class='enum ' href='enum.AppDataPtr.html' title=''>AppDataPtr</a></div>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>pam</a>::<wbr><a href='index.html'>conv</a>::<wbr><a class='struct' href=''>PamConv</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-36' href='../../src/pam/conv.rs.html#30-37'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct PamConv {
+    // some fields omitted
+}</pre><div class='docblock'><p><code>PamConv</code> acts as a channel for communicating with user.</p>
+
+<p>Communication is mediated by the pam client (the application that invoked
+pam).  Messages sent will be relayed to the user by the client, and response
+will be relayed back.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='struct' href='../../pam/conv/struct.PamConv.html' title='pam::conv::PamConv'>PamConv</a></code></h3><div class='impl-items'><h4 id='method.send' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.send' class='fnname'>send</a>(&amp;self, style: <a class='type' href='../../pam/constants/type.PamMessageStyle.html' title='pam::constants::PamMessageStyle'>PamMessageStyle</a>, msg: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='type' href='../../pam/module/type.PamResult.html' title='pam::module::PamResult'>PamResult</a>&lt;<a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;&gt;</code></h4>
+<div class='docblock'><p>Sends a message to the pam client.</p>
+
+<p>This will typically result in the user seeing a message or a prompt.
+There are several message styles available:</p>
+
+<ul>
+<li>PAM_PROMPT_ECHO_OFF</li>
+<li>PAM_PROMPT_ECHO_ON</li>
+<li>PAM_ERROR_MSG</li>
+<li>PAM_TEXT_INFO</li>
+<li>PAM_RADIO_TYPE</li>
+<li>PAM_BINARY_PROMPT</li>
+</ul>
+
+<p>Note that the user experience will depend on how the client implements
+these message styles - and not all applications implement all message
+styles.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../../pam/module/trait.PamItem.html' title='pam::module::PamItem'>PamItem</a> for <a class='struct' href='../../pam/conv/struct.PamConv.html' title='pam::conv::PamConv'>PamConv</a></code></h3><div class='impl-items'><h4 id='method.item_type' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.item_type' class='fnname'>item_type</a>(_: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../../pam/conv/struct.PamConv.html' title='pam::conv::PamConv'>PamConv</a>&gt;) -&gt; <a class='type' href='../../pam/constants/type.PamItemType.html' title='pam::constants::PamItemType'>PamItemType</a></code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "pam";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script async src="../../search-index.js"></script>
+</body>
+</html>
