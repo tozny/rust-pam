@@ -63,16 +63,20 @@ impl PamConv {
 
         let ret = (self.conv)(1, &&msg, &mut resp_ptr, self.appdata_ptr);
 
-        if constants::PAM_SUCCESS == ret {
-            if resp_ptr.is_null() {
-                Ok(None)
-            }
-            else {
-                let bytes = unsafe { CStr::from_ptr((*resp_ptr).resp).to_bytes() };
-                Ok(String::from_utf8(bytes.to_vec()).ok())
-            }
-        } else {
+        if constants::PAM_SUCCESS != ret {
             Err(ret)
+        } else if resp_ptr.is_null() {
+            Err(constants::PAM_SYSTEM_ERR)
+        } else {
+            let resp = unsafe {
+                if (*resp_ptr).resp.is_null() {
+                    None
+                } else {
+                    Some(CStr::from_ptr((*resp_ptr).resp))
+                }
+            };
+            resp.map(|cstr| cstr.to_str().map(str::to_owned))
+                .transpose().map_err(|_| PAM_SYSTEM_ERR)
         }
     }
 }
