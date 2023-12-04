@@ -55,9 +55,10 @@ impl PamConv {
     /// styles.
     pub fn send(&self, style: PamMessageStyle, msg: &str) -> PamResult<Option<String>> {
         let mut resp_ptr: *const PamResponse = ptr::null();
+        let c_msg = CString::new(msg).unwrap();
         let msg = PamMessage {
             msg_style: style,
-            msg: CString::new(msg).unwrap().as_ptr(),
+            msg: c_msg.as_ptr(),
         };
 
         let ret = (self.conv)(1, &&msg, &mut resp_ptr, self.appdata_ptr);
