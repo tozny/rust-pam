@@ -76,9 +76,9 @@ pub trait PamItem {
 /// See `pam_get_data` in
 /// http://www.linux-pam.org/Linux-PAM-html/mwg-expected-by-module-item.html
 pub unsafe fn get_data<'a, T>(pamh: &'a PamHandleT, key: &str) -> PamResult<&'a T> {
-    let c_key = CString::new(key).unwrap().as_ptr();
+    let c_key = CString::new(key).map_err(|_| PAM_SYSTEM_ERR)?;
     let mut ptr: *const PamDataT = ptr::null();
-    let res = pam_get_data(pamh, c_key, &mut ptr);
+    let res = pam_get_data(pamh, c_key.as_ptr(), &mut ptr);
     if constants::PAM_SUCCESS == res && !ptr.is_null() {
         let typed_ptr: *const T = mem::transmute(ptr);
         let data: &T = &*typed_ptr;
@@ -95,10 +95,10 @@ pub unsafe fn get_data<'a, T>(pamh: &'a PamHandleT, key: &str) -> PamResult<&'a 
 /// See `pam_set_data` in
 /// http://www.linux-pam.org/Linux-PAM-html/mwg-expected-by-module-item.html
 pub fn set_data<T>(pamh: &PamHandleT, key: &str, data: Box<T>) -> PamResult<()> {
-    let c_key = CString::new(key).unwrap().as_ptr();
+    let c_key = CString::new(key).map_err(|_| PAM_SYSTEM_ERR)?;
     let res = unsafe {
         let c_data: Box<PamDataT> = mem::transmute(data);
-        pam_set_data(pamh, c_key, c_data, cleanup::<T>)
+        pam_set_data(pamh, c_key.as_ptr(), c_data, cleanup::<T>)
     };
     if constants::PAM_SUCCESS == res { Ok(()) } else { Err(res) }
 }
@@ -135,10 +135,9 @@ pub fn get_item<'a, T: PamItem>(pamh: &'a PamHandleT) -> PamResult<&'a T> {
 /// http://www.linux-pam.org/Linux-PAM-html/mwg-expected-by-module-item.html
 pub fn get_user<'a>(pamh: &'a PamHandleT, prompt: Option<&str>) -> PamResult<String> {
     let ptr: *mut c_char = ptr::null_mut();
-    let c_prompt = match prompt {
-        Some(p) => CString::new(p).unwrap().as_ptr(),
-        None    => ptr::null(),
-    };
+    let prompt = prompt.map(CString::new).transpose().map_err(|_| PAM_SYSTEM_ERR)?;
+    let c_prompt = prompt.as_deref().map(CStr::as_ptr).unwrap_or(ptr::null());
+
     let res = unsafe { pam_get_user(pamh, &ptr, c_prompt) };
     if constants::PAM_SUCCESS == res && !ptr.is_null() {
         let const_ptr = ptr as *const c_char;
